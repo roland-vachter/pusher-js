@@ -1,5 +1,5 @@
 /*!
- * Pusher JavaScript Library v2.2.3
+ * Pusher JavaScript Library v2.2.3-with_unbind_all_fix
  * http://pusherapp.com/
  *
  * Copyright 2011, Pusher

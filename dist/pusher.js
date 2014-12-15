@@ -1,5 +1,5 @@
 /*!
- * Pusher JavaScript Library v2.2.3
+ * Pusher JavaScript Library v2.2.3-with_unbind_all_fix
  * http://pusher.com/
  *
  * Copyright 2014, Pusher
@@ -626,7 +626,7 @@
 }).call(this);
 
 ;(function() {
-  Pusher.VERSION = '2.2.3';
+  Pusher.VERSION = '2.2.3-with_unbind_all_fix';
   Pusher.PROTOCOL = 7;
 
   // DEPRECATED: WS connection parameters
@@ -837,16 +837,20 @@
     return this;
   };
 
-  prototype.unbind_all = function(eventName, callback) {
-    this.callbacks.remove(eventName, callback);
+  prototype.unbind_all = function(callback) {
+    this.global_callbacks = Pusher.Util.filter(
+      this.global_callbacks,
+      function(cb) { return cb !== callback; }
+    );
     return this;
   };
 
   prototype.emit = function(eventName, data) {
     var i;
 
-    for (i = 0; i < this.global_callbacks.length; i++) {
-      this.global_callbacks[i](eventName, data);
+    var globalCallbacks = this.global_callbacks;
+    for (i = 0; i < globalCallbacks.length; i++) {
+      globalCallbacks[i](eventName, data);
     }
 
     var callbacks = this.callbacks.get(eventName);
