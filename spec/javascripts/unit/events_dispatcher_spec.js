@@ -232,6 +232,40 @@ describe("EventsDispatcher", function() {
     });
   });
 
+  describe("#unbind_all", function() {
+    it("should remove given callback", function() {
+      var onEvent1 = jasmine.createSpy("onEvent1");
+      var onEvent2 = jasmine.createSpy("onEvent2");
+
+      dispatcher.bind_all(onEvent1);
+      dispatcher.bind_all(onEvent2);
+      dispatcher.unbind_all(onEvent1);
+
+      dispatcher.emit("event");
+
+      expect(onEvent1).not.toHaveBeenCalled();
+      expect(onEvent2).toHaveBeenCalled();
+    });
+
+    it("should remove all instances of given callback", function() {
+      var onEvent1 = jasmine.createSpy("onEvent1");
+      var onEvent2 = jasmine.createSpy("onEvent2");
+      var onEvent3 = jasmine.createSpy("onEvent3");
+
+      dispatcher.bind_all(onEvent1);
+      dispatcher.bind_all(onEvent2);
+      dispatcher.bind_all(onEvent2);
+      dispatcher.bind_all(onEvent3);
+      dispatcher.unbind_all(onEvent2);
+
+      dispatcher.emit("event");
+
+      expect(onEvent1).toHaveBeenCalled();
+      expect(onEvent2).not.toHaveBeenCalled();
+      expect(onEvent3).toHaveBeenCalled();
+    });
+  });
+
   describe("#emit", function() {
     it("should call all listeners", function() {
       var callbacks = Pusher.Util.map([1, 2, 3], function(i) {

@@ -25,16 +25,20 @@
     return this;
   };
 
-  prototype.unbind_all = function(eventName, callback) {
-    this.callbacks.remove(eventName, callback);
+  prototype.unbind_all = function(callback) {
+    this.global_callbacks = Pusher.Util.filter(
+      this.global_callbacks,
+      function(cb) { return cb !== callback; }
+    );
     return this;
   };
 
   prototype.emit = function(eventName, data) {
     var i;
 
-    for (i = 0; i < this.global_callbacks.length; i++) {
-      this.global_callbacks[i](eventName, data);
+    var globalCallbacks = this.global_callbacks;
+    for (i = 0; i < globalCallbacks.length; i++) {
+      globalCallbacks[i](eventName, data);
     }
 
     var callbacks = this.callbacks.get(eventName);
