@@ -91,7 +91,7 @@ function Pusher(app_key, options) {
     self.channels.disconnect();
   });
   this.connection.bind('error', function(err) {
-    Pusher.warn('Error', err);
+    Logger.warn('Error', err);
   });
 
   Pusher.instances.push(this);
@@ -196,7 +196,7 @@ prototype.isEncrypted = function() {
 
 function checkAppKey(key) {
   if (key === null || key === undefined) {
-    Pusher.warn(
+    Logger.warn(
       'Warning', 'You must pass your app key when you instantiate Pusher.'
     );
   }
