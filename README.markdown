@@ -283,36 +283,9 @@ There are a number of events which are used internally, but can also be of use e
 * connection_established
 * subscribe
 
-## Self-serving JS files
+## HTTP fallback compatibility
 
-You can host JavaScript files yourself, but it's a bit more complicated than putting them somewhere and just linking `pusher.js` in the source of your website. Because pusher-js loads fallback files dynamically, the dependency loader must be configured correctly or it will be using `js.pusher.com`.
-
-First, make sure you expose all files from the `dist` directory. They need to be in a directory with named after the version number. For example, if you're hosting version 2.1.3 under `http://example.com/pusher-js` (and https for SSL), files should be accessible under following URL's:
-
-    http://example.com/pusher-js/2.1.3/pusher.js
-    http://example.com/pusher-js/2.1.3/json2.js
-    http://example.com/pusher-js/2.1.3/sockjs.js
-
-Minified files should have `.min` in names, as in the `dist` directory:
-
-    http://example.com/pusher-js/2.1.3/pusher.min.js
-    http://example.com/pusher-js/2.1.3/json2.min.js
-    http://example.com/pusher-js/2.1.3/sockjs.min.js
-
-Then after loading `pusher.js`, but before connecting, you need to overwrite the dependency loader by executing following piece of code:
-
-    Pusher.Dependencies = new Pusher.DependencyLoader({
-      cdn_http: "http://example.com/pusher-js/",
-      cdn_https: "https://example.com/pusher-js/",
-      version: Pusher.VERSION,
-      suffix: Pusher.dependency_suffix
-    });
-
-## SockJS compatibility
-
-Most browsers have a limit of 6 simultaneous connections to a single domain, but Internet Explorer 6 and 7 have a limit of just 2. This means that you can only use a single Pusher connection in these browsers, because SockJS requires an HTTP connection for incoming data and another one for sending. Opening the second connection will break the first one as the client won't be able to respond to ping messages and get disconnected eventually.
-
-All other browsers work fine with two or three connections.
+Most browsers have a limit of 6 simultaneous connections to a single domain. This means that you can use at most 3 Pusher connections in these browsers, because HTTP fallbacks require an HTTP connection for incoming data and another one for sending. Opening more connections will break existing ones as some clients won't be able to communicate with Pusher and will get disconnected eventually.
 
 ## Developing
 
@@ -354,14 +327,6 @@ However for a prerelease
 It will only write to the full, suffixed directory ./dist/1.7.2-pre
 
 This is so prereleases don't overwrite the previous stable release.
-
-### Clean builds
-
-Building everything from scratch is useful when you update submodules, which need compiling. If you want to perform a clean build, run:
-
-    bin/build
-
-This will clean sockjs-client submodule, check out last committed revision, rebuild SockJS fallback files and then run JBundle. Don't run this command if you have uncommitted changes in any of submodules, since it might overwrite them.
 
 ## Testing
 
