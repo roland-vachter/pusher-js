@@ -349,7 +349,7 @@ Please make sure you run bundler before running any of following commands.
 
 First, start the jasmine and JSONP integration servers:
 
-    bin/jasmine
+    scripts/jasmine
 
 Then open any browser and navigate to <http://localhost:8888/> - it will run both unit and integration tests.
 
@@ -357,7 +357,7 @@ Then open any browser and navigate to <http://localhost:8888/> - it will run bot
 
 Running headless tests is very convenient for development, especially when using guard. Make sure you have PhantomJS installed - you can use `brew install phantomjs` on OS X. Start jasmine and guard:
 
-    bin/guard
+    scripts/guard
 
 Tests will be run automatically in the terminal. Guard watches JS files and specs and re-runs aproppriate tests whenever you save any changes. Press enter to re-run all tests.
 
@@ -373,8 +373,8 @@ Testacular also runs tests automatically, but it uses actual browsers to execute
 
 Then start the server, run one of following commands:
 
-    bin/karma-unit           # runs only unit tests
-    bin/karma-integration    # runs only integration tests
-    bin/karma                # runs both unit and integration tests
+    scripts/karma-unit           # runs only unit tests
+    scripts/karma-integration    # runs only integration tests
+    scripts/karma                # runs both unit and integration tests
 
 All configured browsers will be automatically opened and will run all tests. Testacular also re-executes all specs on file changes. After you close the server, browsers will get shut down too.
