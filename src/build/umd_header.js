@@ -15,10 +15,10 @@
     define([], function () {
       return (root.Pusher = factory());
     });
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
+  } else if (typeof exports === 'object' || (module && module.exports === 'object') {
+    // Node or webpack. Does not work with strict CommonJS, but
     // only CommonJS-like enviroments that support module.exports,
-    // like Node.
+    // like Node or webpack.
     module.exports = factory();
   } else {
     // Browser globals
